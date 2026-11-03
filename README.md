@@ -1,4 +1,4 @@
-# Wardni
+# ULEBI
 
 > An AI agent that runs the hospital night shift — watching every room in low light, listening to patients, and telling the nurse what is urgent first. Vision alerts, voice requests, triage order, and morning handoff in one dashboard.
 
