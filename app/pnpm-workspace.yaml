@@ -1,0 +1,22 @@
+# Keep host-native binaries for builds and Linux ARM64 binaries for Lambda.
+supportedArchitectures:
+  os:
+    - current
+    - linux
+  cpu:
+    - current
+    - arm64
+  libc:
+    - current
+    - glibc
+
+# Packages allowed to run their install scripts (esbuild, sharp and unrs-resolver download/compile native binaries).
+# `allowBuilds` is read by pnpm 11+, `onlyBuiltDependencies` by pnpm 10.
+allowBuilds:
+  esbuild: true
+  sharp: true
+  unrs-resolver: true
+onlyBuiltDependencies:
+  - esbuild
+  - sharp
+  - unrs-resolver

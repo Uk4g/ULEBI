@@ -1,84 +1,84 @@
-# Architecture — detailed graphs
+# Architecture
 
-## System graph
+## One deployment = one ward
 
-```mermaid
-flowchart TB
-    subgraph Room["In the room — simulated for demo"]
-        CAM[Low-light / IR camera]
-        MIC[Intercom microphone]
-        VITALS[Mock vitals<br/>HR / SpO2 / profile]
-    end
+Ulebi is a single-instance server app (Next.js 16 + Payload), not multi-tenant SaaS.
+One deployment has one admin key, its own rooms, beds, cameras, and nurses.
+A public demo runs a sample ward without a key, with the RULES fallback labelled as such.
+"Everyone can use it" means the repo is public: anyone clones it, sets their own key,
+and runs their own instance.
 
-    subgraph Models["Meta models — live, via backend proxy"]
-        SAM[SAM 3.1<br/>segmentation + pose]
-        VOICE[Muse Voice Transcribe<br/>speech to text + intent]
-        SPARK[Muse Spark 1.3<br/>triage + handoff]
-    end
+## Sections, in build order
 
-    subgraph Product["Dashboard — React + Vite, static build"]
-        DASH[Ward grid<br/>6 rooms, colours, timeline]
-        WF[Wireframe view<br/>NO raw video]
-        LOG[Event log<br/>single source of truth]
-        HANDOFF[Morning handoff<br/>generated from log]
-    end
+1. **SAM (Vision)** — live camera, clip, or webcam input; live video + wireframe overlay,
+   track IDs, analyser states, settings (prompt, bed zone, marker colour, camera source, key status).
+   Spark studies the SAM output alone and produces a SAM-only verdict.
+2. **Voice** — mic or audio file via Muse Voice Transcribe; Spark alone produces a voice-only verdict.
+3. **Task buttons (bedside pads)** — HELP, WATER, DRINK, EAT, BATHROOM, PAIN/COMFORT.
+   Each press goes to Spark alone and produces a task verdict.
+4. **Combined dashboard** — merges the three section outputs plus all rooms and patients
+   into one ward order, RED first. The merge is a Spark call over room snapshots, and it
+   can never read calmer than the room boards.
+5. **Nurse call + escalation** — the system invites a nurse. No acknowledge in the configured
+   window (default 45 s, configurable 15–300 s) → next nurse. Still nothing + RED →
+   automated alarm/notification. Alerting only; care decisions stay with the nurse.
 
-    CAM --> SAM
-    SAM --> WF
-    MIC --> VOICE
-    VOICE --> DASH
-    VITALS --> SPARK
-    SAM --> SPARK
-    DASH --> SPARK
-    SPARK --> DASH
-    DASH --> LOG
-    LOG --> HANDOFF
-    DASH --> NURSE[Nurse<br/>acknowledge / turn done / decide]
+## Pipeline
+
+```
+SAM / Voice / Task
+  → Rules floor (deterministic, instant, labelled RULES)
+  → Spark, raise-only (may raise or enrich, never lower)
+  → Wonder, gated (non-routine, out of bed, not visible, or unresolved person;
+     ≥15 s per room, 3-failure circuit breaker)
+  → MERGE (Spark master summary, forced to the highest room level)
+  → Escalation chain (one active escalation per room, upgrades in place)
 ```
 
-## Adapter interfaces — same shape, simulated and live
+- RED/YELLOW floors are recorded immediately, before any AI call, so a slow or failing
+  AI can never delay an alarm.
+- Routine inputs wait for Spark. If Spark is down, routine inputs return 503 and are
+  stored as nothing. TASK presses are the exception: a patient's request is always stored.
+- Routine SAM verdicts are de-duplicated (same routine verdict within 5 minutes is not re-stored).
 
-Every adapter has `MODE = 'simulated' | 'live'`. Same input, same output, so the
-dashboard works with no key, and falls back to simulated if a live call fails.
+## Patient vs staff resolution
 
-```js
-// src/ai/vision.js
-detectVision(room, frame) // -> { pose: 'lying'|'legs-over-rail'|'sitting', line: 'secure'|'tugged', event: null | {type, priority} }
+SAM's prompt returns every person in frame. Resolution order in code:
 
-// src/ai/voice.js
-transcribe(audio) // -> { text: string, intent: 'pain'|'comfort'|'routine'|'other' }
+1. Continuity lock (track overlap / centre distance).
+2. Track starting mostly inside the bed zone.
+3. Single-person track.
+4. Otherwise `UNRESOLVED_PERSON` — never silently assigned to staff or patient.
 
-// src/ai/reasoning.js
-triage(request, profile, vitals) // -> { priority: 'RED'|'YELLOW'|'GREEN', reason: string, nextAction: string }
-makeHandoff(log) // -> string
-```
+Staff comes only from Staff-role classes or exclusion keywords. No face recognition.
+A bright marker colour per patient/bed plus the bed-zone filter is the proposed
+identification fix; it is untested.
 
-## Night flow — state graph
+## Camera relay
 
-```mermaid
-stateDiagram-v2
-    [*] --> Stable: night starts, all green
-    Stable --> TurnDue: turn timer >= 120 min
-    Stable --> BedExitRisk: SAM: sitting up, legs over rail
-    Stable --> VoiceRequest: intercom transcript
-    VoiceRequest --> Red: pain + post-op / urgent sign
-    VoiceRequest --> Yellow: comfort request
-    VoiceRequest --> AutoAnswered: routine question
-    Stable --> LineTug: SAM: line flagged tugged
-    TurnDue --> TurnDone: nurse marks turn done
-    BedExitRisk --> Acknowledged: nurse acknowledges
-    Red --> Acknowledged: nurse acknowledges, walks first
-    Acknowledged --> Stable: resolved, logged
-    TurnDone --> Stable: timer reset, logged
-```
+Room cameras go through a server-side relay (`/ward-api/cam/[roomId]`).
+It supports HLS, MJPEG, and MP4 only — not RTSP. URLs are SSRF-validated, and
+credentials in a camera URL are moved server-side into a token, never sent to the browser.
+Recorded clips and old footage are test inputs only; the product input is live
+hospital camera streams (IP cameras, IR at night).
 
-## Privacy graph
+## Data model
 
-```mermaid
-flowchart LR
-    RAW[Raw video<br/>in room only] -->|segmented, not streamed| WIRE[Wireframe<br/>nurse view]
-    WIRE -->|no faces, no names| DASH[Dashboard tile<br/>Room number + pose + line]
-    DASH -->|fictional only| LOG[Event log<br/>Room + time + event]
-```
+- **Rooms** — name, clinical risk profile, camera URL, bed zone, vision classes,
+  negative exclusions (default: medical staff, nurse, doctor, visitor).
+- **Nurses / staff** — name, role, on-duty flag, call order.
+- **Events** — source (SAM/VOICE/TASK), level (RED/YELLOW/routine), engine
+  (spark / wonder / rules), headline, reason, nurse action, detail.
+- **Escalations** — one active per room, queue from the on-duty roster,
+  acknowledge / advance recorded, repeats recorded, upgrades in place.
+- **API log / audit log** — every Meta call and every key action, with token
+  estimates where the API returns no usage. Handshake token counts are estimates,
+  not measured billing. Usage dollar costs are hardcoded price estimates.
 
-No raw video, no real names, no real patient data leave the simulated room.
+## Key handling
+
+- One Meta Model API key connects SAM, Spark, Voice Transcribe, and Wonder.
+- Keys live in server process memory only (≤512 chars, clearable, with `.env` fallback).
+- The dashboard shows connected / not-connected only. It never echoes a key.
+- Settings routes: GET requires staff, POST requires admin. The verify route lets any
+  staff re-run the handshake, but only an admin's pasted key values are applied.
