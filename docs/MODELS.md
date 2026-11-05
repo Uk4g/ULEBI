@@ -102,6 +102,7 @@ answer back — that is Spark's job, and Spark only sees the transcript.
 
 - Takes a microphone recording or an audio file, split into voice segments at
   16 kHz, and returns a read-only transcript.
+- Languages: English, French, and Arabic by default in the code (`lang=en,fr,ar`).
 - The transcript is shown as-is. It cannot be edited in the app.
 - Silence is rejected server-side, and speech heard but not transcribed is not
   stored — the nurse is told to check the patient in person instead.
@@ -125,6 +126,9 @@ unusual, and say whether the situation is worse than it first looked.
 - **Gated, never always-on.** It runs only for non-routine events — out of bed,
   patient not visible, or an unresolved person — and at most once per room per
   15 seconds.
+- **What it reports:** patient posture (`lying`, `sitting`, `standing`, `on_floor`,
+  `not_visible`, `unclear`), whether staff are hands-on, and whether its reading
+  agrees with SAM's telemetry — as a strict JSON verdict, raise-only.
 - **Raise-only.** Like Spark, it can only raise a verdict, never lower it.
 - **Circuit-broken.** After 3 failures it stops trying, so a broken model does
   not burn credits or block the ward.

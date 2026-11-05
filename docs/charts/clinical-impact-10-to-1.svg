@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 460" width="100%" height="100%" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, monospace">
+  <rect width="1200" height="460" rx="16" fill="#090D16" stroke="#1E293B" stroke-width="2"/>
+  <text x="40" y="46" fill="#F8FAFC" font-size="21" font-weight="800">CLINICAL IMPACT — WHY ULEBI WAS BUILT FOR THE NIGHT SHIFT</text>
+  <text x="40" y="70" fill="#94A3B8" font-size="13">Eliminating patient deaths from nighttime neglect and protecting nurses from fatal cardiovascular strain</text>
+  <line x1="40" y1="86" x2="1160" y2="86" stroke="#1E293B" stroke-width="1.5"/>
+
+  <!-- Card 1: 10 to 1 -->
+  <rect x="40" y="110" width="355" height="315" rx="12" fill="#111827" stroke="#2DD4BF" stroke-width="2"/>
+  <text x="62" y="145" fill="#2DD4BF" font-size="14" font-weight="700">WORKFORCE MULTIPLIER</text>
+  <text x="62" y="195" fill="#F8FAFC" font-size="44" font-weight="900">10 → 1</text>
+  <text x="62" y="222" fill="#E2E8F0" font-size="13" font-weight="700">10 Staff Workloads Run by 1 Person</text>
+  <text x="62" y="254" fill="#94A3B8" font-size="11.5">• Continuous 24/7 IR vision &amp; audio across</text>
+  <text x="74" y="272" fill="#94A3B8" font-size="11.5">every patient room simultaneously</text>
+  <text x="62" y="298" fill="#94A3B8" font-size="11.5">• Eliminates blind corridor rounds</text>
+  <text x="62" y="324" fill="#94A3B8" font-size="11.5">• Automated morning shift handoff report</text>
+  <rect x="62" y="355" width="310" height="42" rx="8" fill="#0D9488" fill-opacity="0.2" stroke="#2DD4BF"/>
+  <text x="78" y="381" fill="#2DD4BF" font-size="12" font-weight="700">One charge nurse commands the whole ward</text>
+
+  <!-- Card 2: Patient Neglect Prevention -->
+  <rect x="422" y="110" width="355" height="315" rx="12" fill="#111827" stroke="#FB7185" stroke-width="2"/>
+  <text x="444" y="145" fill="#FB7185" font-size="14" font-weight="700">ZERO PATIENT NEGLECT</text>
+  <text x="444" y="195" fill="#F8FAFC" font-size="44" font-weight="900">&lt; 3 sec</text>
+  <text x="444" y="222" fill="#E2E8F0" font-size="13" font-weight="700">Detection-to-Nurse Dispatch Latency</text>
+  <text x="444" y="254" fill="#94A3B8" font-size="11.5">• Prevents nighttime deaths from unnoticed</text>
+  <text x="456" y="272" fill="#94A3B8" font-size="11.5">falls, respiratory distress, or neglect</text>
+  <text x="444" y="298" fill="#94A3B8" font-size="11.5">• Bedside buttons (EAT, WC, WATER, PAIN,</text>
+  <text x="456" y="316" fill="#94A3B8" font-size="11.5">HELP) checked against NPO &amp; fall risk</text>
+  <rect x="444" y="355" width="310" height="42" rx="8" fill="#E11D48" fill-opacity="0.2" stroke="#FB7185"/>
+  <text x="460" y="381" fill="#FDA4AF" font-size="12" font-weight="700">Calls the closest on-duty nurse directly</text>
+
+  <!-- Card 3: Nurse Heart Attack & Burnout Protection -->
+  <rect x="805" y="110" width="355" height="315" rx="12" fill="#111827" stroke="#38BDF8" stroke-width="2"/>
+  <text x="827" y="145" fill="#38BDF8" font-size="14" font-weight="700">NURSE HEALTH &amp; CARDIAC SAFETY</text>
+  <text x="827" y="195" fill="#F8FAFC" font-size="44" font-weight="900">100%</text>
+  <text x="827" y="222" fill="#E2E8F0" font-size="13" font-weight="700">Triage Prioritization &amp; False-Alarm Filter</text>
+  <text x="827" y="254" fill="#94A3B8" font-size="11.5">• Full night shifts cause extreme stress,</text>
+  <text x="839" y="272" fill="#94A3B8" font-size="11.5">hypertension, and heart attack risk</text>
+  <text x="827" y="298" fill="#94A3B8" font-size="11.5">• Spark 1.3 separates true emergencies (RED)</text>
+  <text x="839" y="316" fill="#94A3B8" font-size="11.5">from routine comfort requests</text>
+  <rect x="827" y="355" width="310" height="42" rx="8" fill="#0284C7" fill-opacity="0.2" stroke="#38BDF8"/>
+  <text x="843" y="381" fill="#38BDF8" font-size="12" font-weight="700">Calm, ordered shift from a single screen</text>
+</svg>

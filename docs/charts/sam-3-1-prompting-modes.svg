@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 540" width="100%" height="100%" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, monospace">
+  <rect width="1200" height="540" rx="16" fill="#090D16" stroke="#1E293B" stroke-width="2"/>
+  <text x="40" y="46" fill="#F8FAFC" font-size="21" font-weight="800">META SAM 3.1 — THREE NATIVE PROMPTING MODES &amp; MULTI-TARGET WIRE STREAM</text>
+  <text x="40" y="70" fill="#94A3B8" font-size="13">Simultaneous multi-object tracking (#1 Patient, #2 Staff, #3 Equipment) with origin bed lock across slices</text>
+  <line x1="40" y1="86" x2="1160" y2="86" stroke="#1E293B" stroke-width="1.5"/>
+
+  <!-- Mode A -->
+  <rect x="40" y="106" width="355" height="305" rx="12" fill="#111827" stroke="#38BDF8" stroke-width="1.5"/>
+  <text x="60" y="136" fill="#38BDF8" font-size="16" font-weight="800">Mode A · Text Prompt (text)</text>
+  <text x="60" y="158" fill="#94A3B8" font-size="11.5">Natural language class + negative filter</text>
+  <rect x="60" y="172" width="315" height="54" rx="8" fill="#090D16" stroke="#1E293B"/>
+  <text x="72" y="192" fill="#E2E8F0" font-size="10.5" font-family="monospace">patient in bed (person lying in bed</text>
+  <text x="72" y="210" fill="#38BDF8" font-size="10.5" font-family="monospace">wearing gown) | Excl: nurse, staff</text>
+  <text x="60" y="252" fill="#34D399" font-size="12" font-weight="700">+ Clinical Positives:</text>
+  <text x="60" y="272" fill="#CBD5E1" font-size="11">• Zero setup, fast, no manual room calibration</text>
+  <text x="60" y="290" fill="#CBD5E1" font-size="11">• Easy to edit per-room labels on the fly</text>
+  <text x="60" y="322" fill="#FB7185" font-size="12" font-weight="700">− Operational Trade-offs:</text>
+  <text x="60" y="342" fill="#CBD5E1" font-size="11">• Ambiguous if 2 people lie near bed</text>
+  <text x="60" y="360" fill="#CBD5E1" font-size="11">• Color words fail on monochrome IR night cams</text>
+
+  <!-- Mode B -->
+  <rect x="422" y="106" width="355" height="305" rx="12" fill="#111827" stroke="#2DD4BF" stroke-width="2"/>
+  <text x="442" y="136" fill="#2DD4BF" font-size="16" font-weight="800">Mode B · Spatial Prompt (&lt;0f&gt;)</text>
+  <text x="442" y="158" fill="#94A3B8" font-size="11.5">Frame-0 multi-object boxes + (+/-) points</text>
+  <rect x="442" y="172" width="315" height="54" rx="8" fill="#090D16" stroke="#1E293B"/>
+  <text x="454" y="192" fill="#2DD4BF" font-size="10" font-family="monospace">&lt;0f&gt;1&lt;|box;x1=282;y1=158;x2=998;y2=605;</text>
+  <text x="454" y="210" fill="#2DD4BF" font-size="10" font-family="monospace">w=1280;h=720|&gt;&lt;|point;x=640;y=360|&gt;,2&lt;|box..|&gt;</text>
+  <text x="442" y="252" fill="#34D399" font-size="12" font-weight="700">+ Clinical Positives:</text>
+  <text x="442" y="272" fill="#CBD5E1" font-size="11">• Pixel-exact disambiguation in dark IR rooms</text>
+  <text x="442" y="290" fill="#CBD5E1" font-size="11">• Locks patient origin across rolling slices</text>
+  <text x="442" y="322" fill="#FB7185" font-size="12" font-weight="700">− Operational Trade-offs:</text>
+  <text x="442" y="342" fill="#CBD5E1" font-size="11">• Needs initial bed calibration (or preset)</text>
+  <text x="442" y="360" fill="#CBD5E1" font-size="11">• Re-calibrate if physical bed is rolled away</text>
+
+  <!-- Mode C -->
+  <rect x="805" y="106" width="355" height="305" rx="12" fill="#111827" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="825" y="136" fill="#F59E0B" font-size="16" font-weight="800">Mode C · Exemplar Crop</text>
+  <text x="825" y="158" fill="#94A3B8" font-size="11.5">Visual reference crop → Spark → SAM 3.1</text>
+  <rect x="825" y="172" width="315" height="54" rx="8" fill="#090D16" stroke="#1E293B"/>
+  <text x="837" y="192" fill="#F59E0B" font-size="10.5" font-family="monospace">Crop Image → muse-spark-1.3 extracts</text>
+  <text x="837" y="210" fill="#E2E8F0" font-size="10.5" font-family="monospace">2-5 word noun phrase → sam-3.1</text>
+  <text x="825" y="252" fill="#34D399" font-size="12" font-weight="700">+ Clinical Positives:</text>
+  <text x="825" y="272" fill="#CBD5E1" font-size="11">• Ideal for specific IV poles, gowns, or faces</text>
+  <text x="825" y="290" fill="#CBD5E1" font-size="11">• Zero model training or fine-tuning required</text>
+  <text x="825" y="322" fill="#FB7185" font-size="12" font-weight="700">− Operational Trade-offs:</text>
+  <text x="825" y="342" fill="#CBD5E1" font-size="11">• Adds Spark pre-pass latency before SAM</text>
+  <text x="825" y="360" fill="#CBD5E1" font-size="11">• Falls back to label if Spark is offline</text>
+
+  <!-- Bottom Wire Telemetry Bar -->
+  <rect x="40" y="430" width="1120" height="82" rx="12" fill="#0F172A" stroke="#334155" stroke-width="1.5"/>
+  <text x="60" y="458" fill="#2DD4BF" font-size="13" font-weight="800">LIVE SAM 3.1 WIRE STREAM INSPECTOR:</text>
+  <text x="345" y="458" fill="#F8FAFC" font-size="12" font-family="monospace">&lt;0f&gt;1&lt;|box;x1=280;y1=210;x2=820;y2=560;w=1280;h=720|&gt;,2&lt;|box;x1=880;y1=140;x2=1120;y2=640;w=1280;h=720|&gt;</text>
+  <text x="60" y="488" fill="#94A3B8" font-size="12">Parsed Telemetry → <tspan fill="#2DD4BF" font-weight="700">patient#1 (ORIGIN_LOCKED_PATIENT · 94% bed overlap)</tspan> + <tspan fill="#38BDF8" font-weight="700">medical staff#2 (STAFF_OR_EXCLUDED · bedside)</tspan></text>
+</svg>

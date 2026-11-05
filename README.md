@@ -1,8 +1,4 @@
-<p align="center">
-  <img src="assets/ulebi-logo.png" alt="Ulebi" width="240" />
-</p>
-
-<h1 align="center">Ulebi</h1>
+<h1 align="center"><img src="assets/ulebi-mark.png" width="56" alt="Ulebi" /> Ulebi × Meta AI</h1>
 
 <p align="center">
   <strong>An AI agent that runs the hospital night shift.</strong><br />
@@ -59,7 +55,7 @@ unwatched, and it carries the coordination work so one nurse on duty can run a w
 would otherwise need a full night team. That is the aim: ten people's coordination work,
 carried by one nurse plus the agent.
 
-Ulebi watches, listens, triages, and hands off. It never decides care. It orders the work
+Ulebi — “at your service” — watches, listens, triages, and hands off. It never decides care. It orders the work
 by urgency so the nurse can act on the right room first.
 
 Scope is deliberately narrow — **watch, listen, triage, handoff only**.
@@ -121,8 +117,8 @@ sequenceDiagram
 
 1. **Watch.** Low-light camera feeds go through SAM 3.1 tracking. The nurse sees a wireframe,
    not raw video, in Privacy Mode.
-2. **Listen.** Bedside mic or an audio file goes through Muse Voice Transcribe, then Spark.
-3. **Press.** A bedside pad press (HELP, WATER, EAT, DRINK, BATHROOM / WC, and common tasks —
+2. **Listen.** Bedside mic or an audio file goes through Muse Voice Transcribe — in English, French, or Arabic — then Spark.
+3. **Press.** A bedside pad press (HELP, WATER, EAT, DRINK, BATHROOM / WC, PAIN / COMFORT, and common tasks —
    more buttons can be added and linked the same way) reaches the board
    and names the nurse notified — or says plainly that no nurse is on duty.
 4. **Triage.** Spark can only raise a verdict or enrich it. It can never lower the rules floor.
@@ -268,6 +264,7 @@ Full table: [docs/STATUS.md](docs/STATUS.md).
 ## Docs
 
 - [docs/SETUP-GUIDE.md](docs/SETUP-GUIDE.md) — full guide: Meta credits and key, server, rooms, cameras, bed zones, AI check, daily use
+- [docs/charts/](docs/charts/) — pro diagrams from the latest build: 4-model architecture, SAM prompting modes, and the 10-to-1 clinical impact chart
 - [docs/MODELS.md](docs/MODELS.md) — each model's features, SAM's three prompts, the four-model workflow, and the cost controls
 - [docs/PROJECT-RECAP.md](docs/PROJECT-RECAP.md) — idea, features, bedside buttons, nurse call, and the four-model workflow with diagrams
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — sections, pipeline, escalation, data model
